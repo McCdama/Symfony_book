@@ -27,6 +27,8 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('Symfony Book');
+
+        dump($routerBuzilder);
     }
 
     public function configureMenuItems(): iterable

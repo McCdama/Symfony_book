@@ -353,6 +353,9 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/twig-pack": {
+        "version": "v1.0.1"
+    },
     "symfony/uid": {
         "version": "v5.2.11"
     },

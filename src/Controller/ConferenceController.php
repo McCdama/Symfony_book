@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Conference;
+use App\Form\CommentFormType;
 use App\Repository\CommentRepository;
 use App\Repository\ConferenceRepository;
 /* We don’t even need to extend the AbstractController class if we want to be explicit about our dependencies. */
@@ -39,6 +41,9 @@ class ConferenceController extends AbstractController
     public function show(Request $request, Conference $conference, CommentRepository $commentRepository): Response
     {
 
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+
         /* gets the offset from the Request query string ($request->query) as an integer (getInt()), defaulting to 0 if not available. */
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $commentRepository->getCommentPaginator($conference, $offset);
@@ -50,7 +55,8 @@ class ConferenceController extends AbstractController
                 'comments' => $paginator,
                 /* The previous and next offsets are computed based on all the information we have from the paginator */
                 'previous' => $offset - CommentRepository::PAGINATOR_PER_PAGE,
-                'next' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE)
+                'next' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE),
+                'comment_form' => $form->createView(),
             ]
         ));
     }

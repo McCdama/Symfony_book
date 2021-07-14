@@ -11,6 +11,6 @@
     {# <p> <a href="/conference/{{conference.id}}"> View </a></p> #}
 
     {# path() Twig function and the route name #}
-     <p> <a href="{{ path('conference', { id: conference.id }) }}"> View </a></p>
+     <p> <a href="{{ path('conference', { slug: conference.slug }) }}"> View </a></p>
 {% endfor %}
 {% endblock %}

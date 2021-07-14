@@ -7,6 +7,7 @@ use App\Entity\Conference;
 use App\Form\CommentFormType;
 use App\Repository\CommentRepository;
 use App\Repository\ConferenceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 /* We don’t even need to extend the AbstractController class if we want to be explicit about our dependencies. */
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +18,11 @@ use Twig\Environment;
 class ConferenceController extends AbstractController
 {
     private $twig;
-    public function __construct(Environment $twig)
+    private $entityManager;
+    public function __construct(Environment $twig, EntityManagerInterface $entityManager)
     {
-        $this->twig = $this;
+        $this->twig = $twig;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -43,6 +46,21 @@ class ConferenceController extends AbstractController
 
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
+
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setConference($conference);
+
+            $this->entityManager->persist($comment);
+            $this->entityManager->flush();
+
+
+            return $this->redirectToRoute('conference', ['slug' => $conference->getSlug()]);
+        }
+
+
+
 
         /* gets the offset from the Request query string ($request->query) as an integer (getInt()), defaulting to 0 if not available. */
         $offset = max(0, $request->query->getInt('offset', 0));

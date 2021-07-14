@@ -7,5 +7,10 @@
 
 {% for conference in conferences %}
     <h2>{{ conference }}</h2>
+    {# HardCoded! #}
+    {# <p> <a href="/conference/{{conference.id}}"> View </a></p> #}
+
+    {# path() Twig function and the route name #}
+     <p> <a href="{{ path('conference', { id: conference.id }) }}"> View </a></p>
 {% endfor %}
 {% endblock %}

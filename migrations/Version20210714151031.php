@@ -25,7 +25,7 @@ final class Version20210714151031 extends AbstractMigration
         /* FIX: tweaking the migration */
         $this->addSql('ALTER TABLE conference ADD slug VARCHAR(255)');
         $this->addSql("UPDATE conference SET slug=CONCAT(LOWER(city), '-', year)");
-        $this->addSql('ALTER TABLE conference ALTER COLUMN slug SET NOT NULL');
+        //$this->addSql('ALTER TABLE conference ALTER COLUMN slug SET NOT NULL');
     }
 
     public function down(Schema $schema): void

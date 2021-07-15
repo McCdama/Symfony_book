@@ -54,6 +54,11 @@ class Comment
     private $photoFilename;
 
     /**
+     * @ORM\Column(type="string", length=255, options={"default": "submitted"})
+     */
+    private $state = 'submitted';
+
+    /**
      * @ORM\PrePersist
      */
     public function setCreatedAtValue()
@@ -141,5 +146,17 @@ class Comment
     public function __toString()
     {
         return (string) $this->getEmail();
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
+
+        return $this;
     }
 }
